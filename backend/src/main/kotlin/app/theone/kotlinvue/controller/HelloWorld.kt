@@ -1,6 +1,7 @@
 package app.theone.kotlinvue.controller
 
 import app.theone.kotlinvue.model.data.Message
+import app.theone.kotlinvue.model.data.jpa.*
 import org.springframework.web.bind.annotation.*
 import java.util.concurrent.atomic.AtomicInteger
 
@@ -13,6 +14,7 @@ class HelloWorld {
 
     @GetMapping("/helloworld")
     fun greet(): String {
+        var role = Role(0, "")
         return "helloworld!"
     }
 
