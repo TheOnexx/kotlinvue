@@ -14,6 +14,7 @@ data class Role (
 
     @OneToMany(cascade = [CascadeType.PERSIST], mappedBy = "role")
     val users: MutableList<User> = mutableListOf()
+
     internal fun addUser(user: User) {
         users.add(user)
     }
