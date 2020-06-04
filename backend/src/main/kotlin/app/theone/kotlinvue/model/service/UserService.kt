@@ -41,6 +41,33 @@ class UserService(
 
     }
 
+    fun updateUser(userJson: UserJson) {
+        val foundUser = findUserByName(userJson.userName!!)
+
+        val role = roleRepository.findById(userJson.role!!)
+
+        role.orElseThrow {
+            throw RoleNotFoundException("There is no role with id [${userJson.role}]")
+        }
+
+        foundUser.update(userJson)
+        foundUser.role = role.get()
+
+        userRepository.save(foundUser)
+
+    }
+
+    fun login(userJson: UserJson) : Boolean {
+
+        val foundUser = userRepository.findUserByName(userJson.userName!!)
+        if(!foundUser.isPresent) return false
+        val user = foundUser.get()
+        if(user.password == userJson.password) {
+            return true
+        }
+        return false
+    }
+
     fun findUserByName(userName: String): User = userRepository.findUserByName(userName).orElseThrow {
         throw UserNotFoundException("There is no user [${userName}] in system")
     }

@@ -1,5 +1,6 @@
 package app.theone.kotlinvue.model.data.jpa
 
+import app.theone.kotlinvue.model.data.json.ProductJson
 import org.hibernate.annotations.NotFound
 import org.hibernate.annotations.NotFoundAction
 import javax.persistence.*
@@ -11,12 +12,12 @@ data class Product (
         @Column(name = "product_id")
         val productId: Int,
 
-        val name: String,
-        val description: String,
+        var name: String,
+        var description: String,
 
         @ManyToOne(cascade = [CascadeType.REFRESH], fetch = FetchType.LAZY)
         @JoinColumn(name = "category_id", nullable = false)
-        val category: Category
+        var category: Category
 ) {
 
     @OneToMany(cascade = [CascadeType.PERSIST, CascadeType.MERGE], mappedBy = "product")
@@ -29,6 +30,14 @@ data class Product (
 
     fun addComment(comment: Comment) {
         comments.add(comment)
+    }
+
+    fun update(json: ProductJson, category: Category) {
+        this.name = json.name!!
+        this.description = json.description!!
+        this.category.products.remove(this)
+        this.category = category
+        this.category.products.add(this)
     }
 
 }

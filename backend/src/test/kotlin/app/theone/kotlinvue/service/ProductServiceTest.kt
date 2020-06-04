@@ -98,6 +98,22 @@ class ProductServiceTest : AbstractTransactionalJUnit4SpringContextTests() {
         Assert.assertEquals(productService.allProducts().count(), 2)
     }
 
+    @Test
+    fun givenProduct_whenUpdate_thenUpdatedProduct() {
+        val product = productJsonBuild()
+
+        productService.addOrUpdateProduct(product)
+
+        product.id = productService.allProducts().iterator().next().productId
+        product.name = "Changed Name"
+
+        productService.addOrUpdateProduct(product)
+
+        val next = productService.allProducts().iterator().next()
+
+        Assert.assertEquals(product.name, next.name)
+    }
+
     private fun productJsonBuild(): ProductJson {
         val jsonProduct = ProductJson()
         jsonProduct.name = "test1"

@@ -1,5 +1,6 @@
 package app.theone.kotlinvue.model.data.jpa
 
+import app.theone.kotlinvue.model.data.json.UserJson
 import org.hibernate.annotations.NotFound
 import org.hibernate.annotations.NotFoundAction
 import javax.persistence.*
@@ -11,14 +12,15 @@ data class User (
         val userId: Int,
 
         val name: String,
-        val email: String,
+        var email: String,
 
-        val password: String
+        var password: String
 ) {
     @ManyToOne(cascade = [CascadeType.ALL])
     @JoinColumn(name = "role")
     var role: Role? = null
         set(value) {
+            field?.remove(this)
             field = value
             value!!.addUser(this)
         }
@@ -34,5 +36,10 @@ data class User (
 
     fun addComment(comment: Comment) {
         comments.add(comment)
+    }
+
+    fun update(userJson: UserJson) {
+        this.email = userJson.email!!
+        this.password = userJson.password!!
     }
 }

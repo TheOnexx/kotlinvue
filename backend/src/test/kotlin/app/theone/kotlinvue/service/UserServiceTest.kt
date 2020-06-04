@@ -12,6 +12,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ContextConfiguration
+import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
 import org.springframework.test.context.support.AnnotationConfigContextLoader
 
@@ -19,7 +20,7 @@ import org.springframework.test.context.support.AnnotationConfigContextLoader
 @ContextConfiguration(
         classes = [JPAConfig::class],
         loader = AnnotationConfigContextLoader::class)
-class UserServiceTest {
+class UserServiceTest : AbstractTransactionalJUnit4SpringContextTests(){
 
     @Autowired
     lateinit var userRepository: UserRepository
@@ -37,6 +38,10 @@ class UserServiceTest {
                 0,
                 "DefaultUser"
         )
+        val role2 = Role (
+                0,
+                "New Role"
+        )
         roleRepository.save(role)
     }
 
@@ -52,6 +57,43 @@ class UserServiceTest {
         Assert.assertEquals(findUserByName.name, buildUser.userName)
 
         println("role: ${findUserByName.role}")
+    }
+
+    @Test
+    fun givenLoginInfo_whenLoginAction_thenLoggedIn() {
+        val buildUser = buildUser()
+        userService.addUser(buildUser)
+
+        val login = userService.login(buildUser)
+
+        Assert.assertEquals(login, true)
+    }
+
+    @Test
+    fun givenNewUserInfo_whenUpdate_thenUserInfoUpdated() {
+        val buildUser = buildUser()
+        userService.addUser(buildUser)
+        val test = userService.findUserByName(buildUser.userName!!)
+        println("TEST $test")
+
+        val newEmail = "updatedEmail"
+        val newPassword = "updatedPassword"
+        buildUser.email = newEmail
+        buildUser.password = newPassword
+        val role2Id = roleRepository.findAll().last().roleId
+        buildUser.role = role2Id
+
+        userService.updateUser(buildUser)
+
+        println("TEST 2 $test" )
+
+        val foundUpdatedUser = userService.findUserByName(buildUser.userName!!)
+
+        Assert.assertEquals(newEmail, foundUpdatedUser.email)
+        Assert.assertEquals(newPassword, foundUpdatedUser.password)
+        Assert.assertEquals(role2Id, foundUpdatedUser.role?.roleId)
+
+
     }
 
     private fun buildUser() : UserJson = UserJson(

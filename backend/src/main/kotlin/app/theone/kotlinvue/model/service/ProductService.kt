@@ -72,12 +72,9 @@ class ProductService(
 
     private fun updateProduct(productJson: ProductJson, existingProduct: Product) {
         val category = categoryRepository.findById(productJson.category!!).get()
-        val updatedProduct = existingProduct.copy(
-                name = productJson.name!!,
-                description = productJson.description!!,
-                category = category
-        )
-        productRepository.save(updatedProduct)
+
+        existingProduct.update(productJson, category)
+        productRepository.save(existingProduct)
     }
 
 }

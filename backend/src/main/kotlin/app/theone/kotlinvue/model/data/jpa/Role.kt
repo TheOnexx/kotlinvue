@@ -12,10 +12,14 @@ data class Role (
         val value: String
 ) {
 
-    @OneToMany(cascade = [CascadeType.PERSIST], mappedBy = "role")
+    @OneToMany(cascade = [CascadeType.ALL], mappedBy = "role")
     val users: MutableList<User> = mutableListOf()
 
     internal fun addUser(user: User) {
         users.add(user)
+    }
+
+    fun remove(user: User) {
+        users.remove(user)
     }
 }
