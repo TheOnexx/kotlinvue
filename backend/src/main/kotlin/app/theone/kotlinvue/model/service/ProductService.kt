@@ -18,12 +18,12 @@ class ProductService(
         @Autowired private val userRepository: UserRepository,
         @Autowired private val categoryRepository: CategoryRepository) {
 
-    fun addOrUpdateProduct(productJson: ProductJson) {
+    fun addOrUpdateProduct(productJson: ProductJson): Product {
         val foundProduct = productJson.id?.let {
             productRepository.findById(it)
         }
 
-        if(foundProduct != null) {
+        return if(foundProduct != null) {
             val product = foundProduct.orElseThrow {
                 throw ProductNotFoundException("There is no such product with id=" + productJson.id)
             }
@@ -33,7 +33,7 @@ class ProductService(
         }
     }
 
-    fun addComment(comment: CommentJson) {
+    fun addComment(comment: CommentJson): Comment {
         val product = productRepository.findById(comment.productId!!).orElseThrow {
             throw RuntimeException("Product is not found in JSON api")
         }
@@ -51,13 +51,47 @@ class ProductService(
         product.addComment(commentEntity)
         user.addComment(commentEntity)
 
-        productRepository.save(product)
+        val savedProduct = productRepository.save(product)
+        return savedProduct.comments.last()
+
     }
 
     fun allProducts() : Iterable<Product> = productRepository.findAll()
 
+    fun editComment(comment: CommentJson) : Comment {
+        val optionalRelatedProduct = productRepository.findById(comment.productId!!)
+        val relatedProduct = optionalRelatedProduct.orElseThrow {
+            throw ProductNotFoundException("There is no such product with id ${comment.productId}")
+        }
 
-    private fun createNewProduct(productJson: ProductJson) {
+        val foundComment = relatedProduct.comments.find {
+            it.commentId == comment.commentId
+        }
+        foundComment?.content = comment.content!!
+
+        val savedProduct = productRepository.save(relatedProduct)
+
+        return savedProduct.comments.find { it.commentId == comment.commentId }!!
+    }
+
+    fun removeComment(comment: CommentJson) : Boolean {
+        val optionalRelatedProduct = productRepository.findById(comment.productId!!)
+        val relatedProduct = optionalRelatedProduct.orElseThrow {
+            throw ProductNotFoundException("There is no such product with id ${comment.productId}")
+        }
+        val isRemoved = relatedProduct.comments.removeIf {
+            it.commentId == comment.commentId
+        }
+        return if (isRemoved) {
+            productRepository.save(relatedProduct)
+            true
+        } else {
+            false
+        }
+    }
+
+
+    private fun createNewProduct(productJson: ProductJson): Product {
         val category = categoryRepository.findById(productJson.category!!).get()
 
         val newProduct = Product(
@@ -67,14 +101,14 @@ class ProductService(
                 category
         )
 
-        productRepository.save(newProduct)
+        return productRepository.save(newProduct)
     }
 
-    private fun updateProduct(productJson: ProductJson, existingProduct: Product) {
+    private fun updateProduct(productJson: ProductJson, existingProduct: Product): Product {
         val category = categoryRepository.findById(productJson.category!!).get()
 
         existingProduct.update(productJson, category)
-        productRepository.save(existingProduct)
+        return productRepository.save(existingProduct)
     }
 
 }

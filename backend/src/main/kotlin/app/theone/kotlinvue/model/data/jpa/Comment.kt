@@ -14,7 +14,7 @@ data class Comment (
         @ManyToOne(cascade = [CascadeType.ALL])
         @JoinColumn(name = "user_id")
         val user: User,
-        val content: String,
+        var content: String,
 
         @ManyToOne(cascade = [CascadeType.ALL])
         @JoinColumn(name = "product_id")

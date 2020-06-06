@@ -2,6 +2,7 @@ package app.theone.kotlinvue.service
 
 import app.theone.kotlinvue.JPAConfig
 import app.theone.kotlinvue.model.data.jpa.Category
+import app.theone.kotlinvue.model.data.jpa.Product
 import app.theone.kotlinvue.model.data.jpa.User
 import app.theone.kotlinvue.model.data.json.CommentJson
 import app.theone.kotlinvue.model.data.json.ProductJson
@@ -75,11 +76,7 @@ class ProductServiceTest : AbstractTransactionalJUnit4SpringContextTests() {
 
         val foundProduct = productService.allProducts().iterator().next()
 
-        val commentJson = CommentJson(
-                userRepository.findAll().iterator().next().userId,
-                foundProduct.productId,
-                "Comment content"
-        )
+        val commentJson = commentJsonBuild(foundProduct)
         productService.addComment(commentJson)
 
         Assert.assertEquals(foundProduct.comments.size, 1)
@@ -114,6 +111,37 @@ class ProductServiceTest : AbstractTransactionalJUnit4SpringContextTests() {
         Assert.assertEquals(product.name, next.name)
     }
 
+    @Test
+    fun givenProductWithComment_whenCommentUpdated_thenNewCommentSaved() {
+        val product = productJsonBuild()
+        val addedProduct = productService.addOrUpdateProduct(product)
+        val comment = commentJsonBuild(addedProduct)
+        val addedComment = productService.addComment(comment)
+
+        Assert.assertEquals("Comment content", addedComment.content)
+
+        comment.content = "Updated Comment Content"
+        comment.commentId = addedComment.commentId
+        val editComment = productService.editComment(comment)
+
+        Assert.assertEquals("Updated Comment Content", editComment.content)
+    }
+
+    @Test
+    fun givenProductWithComment_whenRemoveComment_thenCommentSizeChanged() {
+        val product = productJsonBuild()
+        val addedProduct = productService.addOrUpdateProduct(product)
+        val comment = commentJsonBuild(addedProduct)
+        val addedComment = productService.addComment(comment)
+        comment.commentId = addedComment.commentId
+
+        Assert.assertEquals(1, productService.allProducts().iterator().next().comments.size)
+
+        productService.removeComment(comment)
+
+        Assert.assertEquals(0, productService.allProducts().iterator().next().comments.size)
+    }
+
     private fun productJsonBuild(): ProductJson {
         val jsonProduct = ProductJson()
         jsonProduct.name = "test1"
@@ -121,4 +149,10 @@ class ProductServiceTest : AbstractTransactionalJUnit4SpringContextTests() {
         jsonProduct.category = categoryRepository.findAll().iterator().next().categoryId
         return jsonProduct
     }
+
+    private fun commentJsonBuild(product: Product) = CommentJson (
+                userRepository.findAll().iterator().next().userId,
+                product.productId,
+                "Comment content"
+    )
 }

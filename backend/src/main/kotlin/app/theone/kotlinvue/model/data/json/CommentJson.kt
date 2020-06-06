@@ -1,6 +1,7 @@
 package app.theone.kotlinvue.model.data.json
 
 class CommentJson {
+    var commentId: Int? = null
     var userId: Int? = null
     var productId: Int? = null
     var content: String? = null
