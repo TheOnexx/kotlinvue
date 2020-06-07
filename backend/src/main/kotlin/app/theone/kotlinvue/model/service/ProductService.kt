@@ -10,7 +10,6 @@ import app.theone.kotlinvue.model.repository.ProductRepository
 import app.theone.kotlinvue.model.repository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import java.lang.RuntimeException
 
 @Service
 class ProductService(
@@ -25,7 +24,7 @@ class ProductService(
 
         return if(foundProduct != null) {
             val product = foundProduct.orElseThrow {
-                throw ProductNotFoundException("There is no such product with id=" + productJson.id)
+                throw ProductNotFoundException(productJson.id!!)
             }
             updateProduct(productJson, product)
         } else {
@@ -56,12 +55,28 @@ class ProductService(
 
     }
 
+    fun getProductById(id : Int): Product {
+        val possibleProduct = productRepository.findById(id)
+        return possibleProduct.orElseThrow {
+            throw ProductNotFoundException(id)
+        }
+    }
+
+    fun removeProduct(id: Int) {
+        val possibleProduct = productRepository.findById(id)
+        val product = possibleProduct.orElseThrow {
+            throw ProductNotFoundException(id)
+        }
+        product.category.products.remove(product)
+        productRepository.delete(product)
+    }
+
     fun allProducts() : Iterable<Product> = productRepository.findAll()
 
-    fun editComment(comment: CommentJson) : Comment {
+    fun editComment(comment: CommentJson): Comment {
         val optionalRelatedProduct = productRepository.findById(comment.productId!!)
         val relatedProduct = optionalRelatedProduct.orElseThrow {
-            throw ProductNotFoundException("There is no such product with id ${comment.productId}")
+            throw ProductNotFoundException(comment.productId!!)
         }
 
         val foundComment = relatedProduct.comments.find {
@@ -74,10 +89,10 @@ class ProductService(
         return savedProduct.comments.find { it.commentId == comment.commentId }!!
     }
 
-    fun removeComment(comment: CommentJson) : Boolean {
+    fun removeComment(comment: CommentJson): Boolean {
         val optionalRelatedProduct = productRepository.findById(comment.productId!!)
         val relatedProduct = optionalRelatedProduct.orElseThrow {
-            throw ProductNotFoundException("There is no such product with id ${comment.productId}")
+            throw ProductNotFoundException(comment.productId!!)
         }
         val isRemoved = relatedProduct.comments.removeIf {
             it.commentId == comment.commentId

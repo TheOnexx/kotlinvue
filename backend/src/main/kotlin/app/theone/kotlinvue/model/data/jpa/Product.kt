@@ -15,12 +15,12 @@ data class Product (
         var name: String,
         var description: String,
 
-        @ManyToOne(cascade = [CascadeType.REFRESH], fetch = FetchType.LAZY)
+        @ManyToOne(fetch = FetchType.LAZY)
         @JoinColumn(name = "category_id", nullable = false)
         var category: Category
 ) {
 
-    @OneToMany(cascade = [CascadeType.PERSIST, CascadeType.MERGE], mappedBy = "product")
+    @OneToMany(cascade = [CascadeType.ALL], mappedBy = "product")
     @NotFound(action = NotFoundAction.IGNORE)
     val comments: MutableList<Comment> = mutableListOf()
 

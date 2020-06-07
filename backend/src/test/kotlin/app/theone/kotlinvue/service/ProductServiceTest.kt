@@ -142,6 +142,23 @@ class ProductServiceTest : AbstractTransactionalJUnit4SpringContextTests() {
         Assert.assertEquals(0, productService.allProducts().iterator().next().comments.size)
     }
 
+    @Test
+    fun givenProduct_whenRemoveProduct_theProductRemoved() {
+        val product = productJsonBuild()
+        val addOrUpdateProduct = productService.addOrUpdateProduct(product)
+
+        Assert.assertEquals(1, productService.allProducts().count())
+        println("products ${productService.allProducts()}, productId= ${addOrUpdateProduct.productId}")
+
+        productService.removeProduct(addOrUpdateProduct.productId)
+
+        println("products2 ${productService.allProducts()}, productId= ${addOrUpdateProduct.productId}")
+        Assert.assertEquals(0, productService.allProducts().count())
+
+
+
+    }
+
     private fun productJsonBuild(): ProductJson {
         val jsonProduct = ProductJson()
         jsonProduct.name = "test1"
