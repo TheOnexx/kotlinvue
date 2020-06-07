@@ -9,6 +9,7 @@ import app.theone.kotlinvue.model.data.json.ProductJson
 import app.theone.kotlinvue.model.repository.CategoryRepository
 import app.theone.kotlinvue.model.repository.UserRepository
 import app.theone.kotlinvue.model.service.ProductService
+import app.theone.kotlinvue.model.service.impl.ProductServiceImpl
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test

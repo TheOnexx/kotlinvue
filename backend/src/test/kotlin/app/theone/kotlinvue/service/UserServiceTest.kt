@@ -6,6 +6,7 @@ import app.theone.kotlinvue.model.data.json.UserJson
 import app.theone.kotlinvue.model.repository.RoleRepository
 import app.theone.kotlinvue.model.repository.UserRepository
 import app.theone.kotlinvue.model.service.UserService
+import app.theone.kotlinvue.model.service.impl.UserServiceImpl
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -50,13 +51,13 @@ class UserServiceTest : AbstractTransactionalJUnit4SpringContextTests(){
     fun givenUser_whenSaved_thenUserAdded() {
         val buildUser = buildUser()
 
-        userService.addUser(buildUser)
+        val addUser = userService.addUser(buildUser)
 
         val findUserByName = userService.findUserByName(buildUser.userName!!)
 
         Assert.assertEquals(findUserByName.name, buildUser.userName)
+        Assert.assertEquals(findUserByName.userId, addUser.userId)
 
-        println("role: ${findUserByName.role}")
     }
 
     @Test
