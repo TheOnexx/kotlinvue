@@ -1,5 +1,6 @@
 package app.theone.kotlinvue.model.data.jpa
 
+import app.theone.kotlinvue.model.data.json.CategoryJson
 import org.hibernate.annotations.NotFound
 import org.hibernate.annotations.NotFoundAction
 import javax.persistence.*
@@ -9,8 +10,8 @@ data class Category (
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         val categoryId: Int,
-        val name: String,
-        val description: String,
+        var name: String,
+        var description: String,
 
         @ManyToOne(cascade = [CascadeType.ALL])
         @JoinColumn(name = "parent_id")
@@ -37,5 +38,12 @@ data class Category (
     internal fun addSubCategory(subCategory: Category) {
         subCategories.add(subCategory)
         subCategory.parent = this
+    }
+
+    fun update(categoryJson: CategoryJson, parent: Category?) {
+        name = categoryJson.name!!
+        description = categoryJson.description!!
+        this.parent = parent
+        parent?.addSubCategory(this)
     }
 }
