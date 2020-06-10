@@ -1,6 +1,7 @@
 package app.theone.kotlinvue.model.data.jpa
 
 
+import app.theone.kotlinvue.model.data.enums.OrderStatus
 import javax.persistence.*
 
 @Entity(name="orders")
@@ -14,9 +15,8 @@ data class Order (
         @JoinColumn(name = "user_id")
         val user: User,
 
-        @ManyToOne(cascade = [CascadeType.ALL])
-        @JoinColumn(name = "status")
-        val status: Status,
+        @Enumerated
+        val status: OrderStatus,
 
         val total: Int,
 
