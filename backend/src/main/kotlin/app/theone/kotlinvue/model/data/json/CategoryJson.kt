@@ -5,4 +5,10 @@ class CategoryJson {
     var name: String? = null
     var description: String? = null
     var parentId: Int? = null
+
+    constructor(name: String?, description: String?, parentId: Int?) {
+        this.name = name
+        this.description = description
+        this.parentId = parentId
+    }
 }

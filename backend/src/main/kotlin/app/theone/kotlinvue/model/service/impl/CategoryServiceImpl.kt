@@ -7,7 +7,9 @@ import app.theone.kotlinvue.model.exception.CategoryNotFoundException
 import app.theone.kotlinvue.model.repository.CategoryRepository
 import app.theone.kotlinvue.model.service.CategoryService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Service
 
+@Service
 class CategoryServiceImpl(
         @Autowired val categoryRepository: CategoryRepository
 ) : CategoryService {
@@ -38,19 +40,28 @@ class CategoryServiceImpl(
 
     }
 
-    override fun removeCategory(categoryJson: CategoryJson): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun removeCategory(categoryId: Int) {
+        val possibleCategory = categoryRepository.findById(categoryId)
+        val category = possibleCategory.orElseThrow {
+            throw CategoryNotFoundException(categoryId)
+        }
+        categoryRepository.delete(category)
     }
 
     override fun getProductsInCategory(categoryId: Int): Iterable<Product> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val possibleCategory = categoryRepository.findById(categoryId)
+        val category = possibleCategory.orElseThrow {
+            throw CategoryNotFoundException(categoryId)
+        }
+
+        return category.products
     }
 
     private fun findParentCategory(parentId: Int?): Category? {
         parentId?.let {parentIdSafe ->
             val possibleParentCategory = categoryRepository.findById(parentIdSafe)
-            possibleParentCategory.ifPresent {
-                return@ifPresent
+            if(possibleParentCategory.isPresent) {
+                return possibleParentCategory.get()
             }
 
         }

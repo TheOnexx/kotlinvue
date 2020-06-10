@@ -7,7 +7,7 @@ import app.theone.kotlinvue.model.data.json.CategoryJson
 interface CategoryService {
     fun addCategory(categoryJson: CategoryJson): Category
     fun editCategory(categoryJson: CategoryJson): Category
-    fun removeCategory(categoryJson: CategoryJson): Boolean
+    fun removeCategory(categoryId: Int)
 
     fun getProductsInCategory(categoryId: Int): Iterable<Product>
 }
