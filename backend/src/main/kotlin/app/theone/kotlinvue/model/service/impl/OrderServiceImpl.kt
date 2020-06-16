@@ -2,12 +2,11 @@ package app.theone.kotlinvue.model.service.impl
 
 import app.theone.kotlinvue.model.data.enums.OrderStatus
 import app.theone.kotlinvue.model.data.jpa.Order
-import app.theone.kotlinvue.model.data.jpa.Product
 import app.theone.kotlinvue.model.data.json.OrderJson
 import app.theone.kotlinvue.model.exception.OrderAlreadyExistsException
 import app.theone.kotlinvue.model.exception.UserIdNotFoundException
-import app.theone.kotlinvue.model.exception.UserNotFoundException
 import app.theone.kotlinvue.model.repository.OrderRepository
+import app.theone.kotlinvue.model.repository.ProductRepository
 import app.theone.kotlinvue.model.repository.UserRepository
 import app.theone.kotlinvue.model.service.OrderService
 import org.springframework.beans.factory.annotation.Autowired
@@ -16,7 +15,8 @@ import org.springframework.stereotype.Service
 @Service
 class OrderServiceImpl(
         @Autowired val orderRepository: OrderRepository,
-        @Autowired val userRepository: UserRepository
+        @Autowired val userRepository: UserRepository,
+        @Autowired var productRepository: ProductRepository
 ) : OrderService {
     override fun addOrder(orderJson: OrderJson): Order {
         val orderId = orderJson.orderId
@@ -30,13 +30,14 @@ class OrderServiceImpl(
         val user = possibleUser.orElseThrow {
             throw UserIdNotFoundException(orderJson.userId!!)
         }
+        val products = productRepository.findAllById(orderJson.orderedProducts!!)
 
         val newOrder = Order(
                 0,
                 user,
                 OrderStatus.NEW,
                 orderJson.total!!,
-                mutableListOf()
+                products.toMutableList()
         )
         return orderRepository.save(newOrder)
     }

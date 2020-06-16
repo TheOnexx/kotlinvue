@@ -26,5 +26,5 @@ data class Order (
                 joinColumns = [JoinColumn(name="product_id")],
                 inverseJoinColumns = [JoinColumn(name="order_id")]
         )
-        val orders: MutableList<Order> = mutableListOf()
+        val products: MutableList<Product> = mutableListOf()
 )

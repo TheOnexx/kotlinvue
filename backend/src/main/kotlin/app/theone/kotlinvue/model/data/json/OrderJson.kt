@@ -7,4 +7,10 @@ class OrderJson {
     var total: Int? = null
     var orderedProducts: Iterable<Int>? = null
 
+    constructor(userId: Int?, statusId: Int?, total: Int?, orderedProducts: Iterable<Int>?) {
+        this.userId = userId
+        this.statusId = statusId
+        this.total = total
+        this.orderedProducts = orderedProducts
+    }
 }
