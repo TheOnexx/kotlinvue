@@ -114,6 +114,7 @@ class ProductServiceImpl (
                 0,
                 productJson.name!!,
                 productJson.description!!,
+                productJson.price!!,
                 category
         )
 

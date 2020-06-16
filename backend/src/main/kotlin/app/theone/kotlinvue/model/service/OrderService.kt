@@ -7,7 +7,6 @@ interface OrderService {
     fun addOrder(orderJson: OrderJson): Order
     fun cancelOrder(orderId: Int)
     fun findAllOrdersByUser(userId: Int): Iterable<Order>
-    fun addProductToOrder(orderJson: OrderJson): Order
-    fun removeProductFromOrder(orderJson: OrderJson): Order
+    fun changeProductsInOrder(orderJson: OrderJson): Order
 
 }

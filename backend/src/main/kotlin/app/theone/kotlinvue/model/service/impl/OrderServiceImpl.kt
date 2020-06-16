@@ -33,11 +33,13 @@ class OrderServiceImpl(
         }
         val products = productRepository.findAllById(orderJson.orderedProducts!!)
 
+        val totalPrice = products.map { it.price }.sum()
+
         val newOrder = Order(
                 0,
                 user,
                 OrderStatus.NEW,
-                orderJson.total!!,
+                totalPrice,
                 products.toMutableList()
         )
         return orderRepository.save(newOrder)
@@ -62,11 +64,18 @@ class OrderServiceImpl(
         }
     }
 
-    override fun addProductToOrder(orderJson: OrderJson): Order {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun changeProductsInOrder(orderJson: OrderJson): Order {
+        val possibleOrder = orderRepository.findById(orderJson.orderId!!)
+        val order = possibleOrder.orElseThrow {
+            throw OrderNotFoundException(orderJson.orderId!!)
+        }
+        val products = productRepository.findAllById(orderJson.orderedProducts!!)
+        val totalPrice = products.map { it.price }.sum()
+        order.products = products.toMutableList()
+        order.total = totalPrice
+
+        return orderRepository.save(order)
+
     }
 
-    override fun removeProductFromOrder(orderJson: OrderJson): Order {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
 }

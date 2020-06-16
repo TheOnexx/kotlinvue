@@ -69,7 +69,7 @@ class BaseHibernateTests : BaseCoreFunctionalTestCase() {
     fun test_Product_Comments() {
         doInHibernate(({ this.sessionFactory() }), { session ->
             var category = Category(0, "testCat","desc")
-            var product1 = Product(0, "test1", "testDesc", category)
+            var product1 = Product(0, "test1", "testDesc", 100, category)
             val user1 = User(0,
                     "test1",
                     "test1.email",
@@ -106,7 +106,7 @@ class BaseHibernateTests : BaseCoreFunctionalTestCase() {
         doInHibernate(({ this.sessionFactory() }), { session ->
             val category = Category(0, "test", "desc")
 
-            val product = Product(0, "name", "desc", category)
+            val product = Product(0, "name", "desc", 100, category)
 
         })
     }

@@ -68,8 +68,16 @@ class OrderServiceTest : AbstractTransactionalJUnit4SpringContextTests(){
                 100,
                 category
         )
+        val product2 = Product(
+                0,
+                "product2",
+                "product2Description",
+                200,
+                category
+        )
 
         productRepository.save(product)
+        productRepository.save(product2)
     }
 
     @Test
@@ -82,7 +90,7 @@ class OrderServiceTest : AbstractTransactionalJUnit4SpringContextTests(){
         
         Assert.assertEquals(newOrder.userId, next.user.userId)
         Assert.assertEquals(newOrder.statusId, next.status.ordinal)
-        Assert.assertEquals(newOrder.total, next.total)
+        Assert.assertEquals(100, next.total)
         val productIds = next.products.map { it.productId }
         Assert.assertEquals(newOrder.orderedProducts, productIds)
 
@@ -107,6 +115,24 @@ class OrderServiceTest : AbstractTransactionalJUnit4SpringContextTests(){
 
     }
 
+    @Test
+    fun givenOrderInfo_whenSaved_thenChangedProductList() {
+
+        val addOrder = orderService.addOrder(buildOrder())
+
+        Assert.assertEquals(1, addOrder.products.count())
+
+        val buildOrder = buildOrder()
+
+        buildOrder.orderId = addOrder.orderId
+        buildOrder.orderedProducts = productRepository.findAll().map { it.productId }
+
+        val changeProductsInOrder = orderService.changeProductsInOrder(buildOrder)
+
+        Assert.assertEquals(300, changeProductsInOrder.total)
+        Assert.assertEquals(2, changeProductsInOrder.products.count())
+    }
+
     private fun buildOrder(): OrderJson {
         val user = userRepository.findAll().iterator().next()
         val product = productRepository.findAll().iterator().next()
@@ -114,7 +140,6 @@ class OrderServiceTest : AbstractTransactionalJUnit4SpringContextTests(){
         return OrderJson(
                 user.userId,
                 OrderStatus.NEW.ordinal,
-                1000,
                 mutableListOf(product.productId)
         )
     }
