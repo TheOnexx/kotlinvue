@@ -16,9 +16,9 @@ data class Order (
         val user: User,
 
         @Enumerated
-        val status: OrderStatus,
+        var status: OrderStatus,
 
-        val total: Int,
+        var total: Int,
 
         @ManyToMany(fetch = FetchType.EAGER)
         @JoinTable(

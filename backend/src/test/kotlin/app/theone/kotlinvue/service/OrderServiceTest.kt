@@ -89,6 +89,23 @@ class OrderServiceTest : AbstractTransactionalJUnit4SpringContextTests(){
 
     }
 
+    @Test
+    fun givenUserId_whenOrderByUserId_thenOrderIsFound() {
+        val user = userRepository.findAll().first()
+
+        val orders = orderService.findAllOrdersByUser(user.userId)
+
+        Assert.assertEquals(0, orders.count())
+
+        orderService.addOrder(buildOrder())
+
+        val ordersAfterAdded = orderService.findAllOrdersByUser(user.userId)
+
+        Assert.assertEquals(1, ordersAfterAdded.count())
+
+
+    }
+
     private fun buildOrder(): OrderJson {
         val user = userRepository.findAll().iterator().next()
         val product = productRepository.findAll().iterator().next()

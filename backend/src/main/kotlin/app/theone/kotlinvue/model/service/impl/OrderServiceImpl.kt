@@ -4,6 +4,7 @@ import app.theone.kotlinvue.model.data.enums.OrderStatus
 import app.theone.kotlinvue.model.data.jpa.Order
 import app.theone.kotlinvue.model.data.json.OrderJson
 import app.theone.kotlinvue.model.exception.OrderAlreadyExistsException
+import app.theone.kotlinvue.model.exception.OrderNotFoundException
 import app.theone.kotlinvue.model.exception.UserIdNotFoundException
 import app.theone.kotlinvue.model.repository.OrderRepository
 import app.theone.kotlinvue.model.repository.ProductRepository
@@ -43,11 +44,22 @@ class OrderServiceImpl(
     }
 
     override fun cancelOrder(orderId: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val possibleOrder = orderRepository.findById(orderId)
+        val order = possibleOrder.orElseThrow {
+            throw OrderNotFoundException(orderId)
+        }
+
+        order.status = OrderStatus.CANCELLED
+
+        orderRepository.save(order)
+
     }
 
     override fun findAllOrdersByUser(userId: Int): Iterable<Order> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val possibleOrders = orderRepository.findOrdersByUserId(userId)
+        return possibleOrders.orElseGet {
+            emptyList()
+        }
     }
 
     override fun addProductToOrder(orderJson: OrderJson): Order {
