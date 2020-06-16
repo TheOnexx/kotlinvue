@@ -14,6 +14,7 @@ data class Product (
 
         var name: String,
         var description: String,
+        var price: Int,
 
         @ManyToOne(fetch = FetchType.LAZY)
         @JoinColumn(name = "category_id", nullable = false)

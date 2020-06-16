@@ -65,6 +65,7 @@ class OrderServiceTest : AbstractTransactionalJUnit4SpringContextTests(){
                 0,
                 "product1",
                 "product1Description",
+                100,
                 category
         )
 

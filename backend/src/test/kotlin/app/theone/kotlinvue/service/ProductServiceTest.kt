@@ -164,6 +164,7 @@ class ProductServiceTest : AbstractTransactionalJUnit4SpringContextTests() {
         val jsonProduct = ProductJson()
         jsonProduct.name = "test1"
         jsonProduct.description = "testdesc"
+        jsonProduct.price = 100
         jsonProduct.category = categoryRepository.findAll().iterator().next().categoryId
         return jsonProduct
     }
