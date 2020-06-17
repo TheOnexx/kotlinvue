@@ -8,4 +8,5 @@ interface UserService {
     fun updateUser(userJson: UserJson): User
     fun login(userJson: UserJson) : Boolean
     fun findUserByName(userName: String): User
+    fun register(userJson: UserJson): User
 }

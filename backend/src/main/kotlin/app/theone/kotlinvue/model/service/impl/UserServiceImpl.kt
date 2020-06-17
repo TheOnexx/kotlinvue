@@ -44,6 +44,13 @@ class UserServiceImpl(
 
     }
 
+    override fun register(userJson: UserJson): User {
+        val defaultRole = roleRepository.defaultRole()
+        userJson.role = defaultRole.roleId
+
+        return addUser(userJson)
+    }
+
     override fun updateUser(userJson: UserJson): User {
         val foundUser = findUserByName(userJson.userName!!)
 
