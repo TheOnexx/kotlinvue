@@ -6,6 +6,6 @@ import org.springframework.data.repository.CrudRepository
 
 interface RoleRepository : CrudRepository<Role, Int> {
 
-    @Query("select role from roles where value = 'default'")
+    @Query("select role from roles where value = 'ROLE_USER'")
     fun defaultRole() : Role
 }

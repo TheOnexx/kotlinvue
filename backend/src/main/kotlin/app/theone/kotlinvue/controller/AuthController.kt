@@ -28,11 +28,11 @@ class AuthController(
             } else {
                 ResponseEntity(
                         "User not found or password is incorrect",
-                        HttpStatus.BAD_REQUEST
+                        HttpStatus.CONFLICT
                 )
             }
         } catch (e: Exception) {
-            throw ResponseStatusException(HttpStatus.BAD_REQUEST, e.message)
+            throw ResponseStatusException(HttpStatus.CONFLICT, e.message)
         }
     }
 

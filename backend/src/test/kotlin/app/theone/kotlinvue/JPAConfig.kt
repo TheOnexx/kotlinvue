@@ -21,7 +21,7 @@ import javax.sql.DataSource
 @Configuration
 @EnableJpaRepositories(basePackages = ["app.theone.kotlinvue.model.repository"])
 @ComponentScan("app.theone.kotlinvue.*")
-@PropertySource("hibernate.properties")
+@PropertySource("classpath:hibernate.properties")
 @EnableTransactionManagement
 class JPAConfig {
 
