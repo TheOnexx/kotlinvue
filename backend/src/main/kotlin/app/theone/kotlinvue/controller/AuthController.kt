@@ -1,7 +1,10 @@
 package app.theone.kotlinvue.controller
 
 import app.theone.kotlinvue.model.data.json.UserJson
+import app.theone.kotlinvue.model.exception.ApiError
+import app.theone.kotlinvue.model.exception.RestApiException
 import app.theone.kotlinvue.model.service.UserService
+import app.theone.kotlinvue.utils.asJsonString
 import org.modelmapper.ModelMapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.server.ResponseStatusException
+import java.lang.RuntimeException
 import javax.validation.Valid
 
 @RestController
@@ -27,7 +31,11 @@ class AuthController(
                 ResponseEntity.ok("Logged in")
             } else {
                 ResponseEntity(
-                        "User not found or password is incorrect",
+                        ApiError(
+                                HttpStatus.CONFLICT,
+                                "User not found or password is incorrect",
+                                emptyList()
+                                ).asJsonString(),
                         HttpStatus.CONFLICT
                 )
             }
@@ -43,7 +51,7 @@ class AuthController(
             val newUserJson = ModelMapper().map(user, UserJson::class)
             return ResponseEntity.ok(newUserJson)
         } catch (e: Exception) {
-            throw ResponseStatusException(HttpStatus.BAD_REQUEST, e.message)
+            throw RestApiException(e)
         }
     }
 }

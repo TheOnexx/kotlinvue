@@ -44,6 +44,7 @@ class UserServiceImpl(
 
     }
 
+    @Transactional
     override fun register(userJson: UserJson): User {
         val defaultRole = roleRepository.defaultRole()
         userJson.role = defaultRole.roleId
