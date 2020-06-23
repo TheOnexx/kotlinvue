@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Message from "./components/Message.vue"
-import Test from "./components/Test.vue"
+import MainPage from "./components/MainPage.vue"
+import UserPage from "./components/UserPage.vue"
 
 Vue.use(Router);
 
@@ -10,8 +10,13 @@ export default new Router({
     routes: [
         {
             path: '/',
-            name: 'Message',
-            component: Message
+            name: 'MainPage',
+            component: MainPage
+        },
+        {
+            path: '/user',
+            name: 'UserPage',
+            component: UserPage
         }
     ]
 })
