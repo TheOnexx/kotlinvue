@@ -24,7 +24,7 @@ class SecurityConfig : WebSecurityConfigurerAdapter() {
     override fun configure(http: HttpSecurity?) {
         http!!.authorizeRequests()
                 .antMatchers("/users/self")
-                    .hasRole("ROLE_USER")
+                    .hasRole("USER")
                 .antMatchers("/", "/**")
                     .permitAll()
     }

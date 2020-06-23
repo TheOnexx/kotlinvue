@@ -77,7 +77,7 @@ class AuthControllerTest {
                 null
         )
 
-        this.mockMvc.perform(post("/auth/login.do")
+        this.mockMvc.perform(post("/api/auth/login.do")
                 .contentType(APPLICATION_JSON)
                 .content(userJson.asJsonString()))
                 .andDo(MockMvcResultHandlers.print()).andExpect(status().isOk)
@@ -95,7 +95,7 @@ class AuthControllerTest {
                 null
         )
 
-        this.mockMvc.perform(post("/auth/login.do")
+        this.mockMvc.perform(post("/api/auth/login.do")
                 .contentType(APPLICATION_JSON)
                 .content(userJson.asJsonString()))
                 .andDo(MockMvcResultHandlers.print()).andExpect(status().isConflict)
@@ -114,7 +114,7 @@ class AuthControllerTest {
                 null
         )
 
-        this.mockMvc.perform(post("/auth/register.do")
+        this.mockMvc.perform(post("/api/auth/register.do")
                 .contentType(APPLICATION_JSON)
                 .content(userJson.asJsonString()))
                 .andDo(MockMvcResultHandlers.print()).andExpect(status().isOk)
