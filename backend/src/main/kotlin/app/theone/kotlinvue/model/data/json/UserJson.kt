@@ -7,22 +7,18 @@ import java.io.Serializable
 class UserJson : Serializable {
 
     @JsonProperty("userId")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     var userId: Int? = null
 
     @JsonProperty("userName")
     var userName: String? = null
 
     @JsonProperty("email")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     var email: String? = null
 
     @JsonProperty("password")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     var password: String? = null
 
     @JsonProperty("roleId")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     var role: Int? = null
 
 

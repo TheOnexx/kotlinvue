@@ -1,6 +1,5 @@
 <template>
     <div id="app">
-        <h1>Shop Dev</h1>
         <Header/>
         <router-view/>
     </div>
