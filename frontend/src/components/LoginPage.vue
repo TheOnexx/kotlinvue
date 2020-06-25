@@ -3,6 +3,9 @@
         <div class="row">
             <h1>Login form</h1>
             <form class="col s12" @submit.prevent="handleLogin">
+                <div v-if="errorMsg" class="card-panel">
+                    <span class="blue-text text-darken-2">{{errorMsg}}</span>
+                </div>
                 <div class="row">
                     <div class="input-field">
                         <input v-model="userName" id="userName" type="text" class="validate" required>
@@ -32,7 +35,8 @@
 
         data: () => ({
             userName: '',
-            password: ''
+            password: '',
+            errorMsg: '',
         }),
 
         methods: {
@@ -42,10 +46,23 @@
                     password: this.password
                 };
                 console.log(loginInfo);
-                let response = AXIOS.post('/auth/login.do', {'userName' : this.userName, 'password' : this.password});
+                AXIOS.post('/auth/login.do', {'userName' : this.userName, 'password' : this.password})
+                    .then(response => {
+                        console.log("response: " + response);
+                        this.$router.push("/categories")
+                    }, error => {
+                        this.showError(error.response.data.message)
+                    })
+                    .catch(e => {
+                        console.log("ERROR!!! " + e);
+                        this.showError('Server error. Please, report this error website owners');
+                    });
 
 
-                console.log(response);
+            },
+
+            showError(errorMessage) {
+                this.errorMsg = errorMessage
             }
         }
     }

@@ -24,7 +24,7 @@ class AuthController(
 ) {
 
     @PostMapping("login.do")
-    fun login(@Valid @RequestBody userJson: UserJson): ResponseEntity<String> {
+    fun login(@Valid @RequestBody userJson: UserJson): ResponseEntity<*> {
         try {
             val isLogin = userService.login(userJson)
             return if(isLogin) {

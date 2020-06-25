@@ -19,7 +19,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <rest-assured.version>3.3.0</rest-assured.version>
         <start-class>app.theone.kotlinvue.KotlinvueApplicationKt</start-class>
-        <postgresql.version>9.1-901-1.jdbc4</postgresql.version>
+        <postgresql.version>42.2.14</postgresql.version>
     </properties>
 
     <dependencies>
@@ -52,7 +52,7 @@
 
         <!-- PostgreSQL -->
         <dependency>
-            <groupId>postgresql</groupId>
+            <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>${postgresql.version}</version>
         </dependency>
