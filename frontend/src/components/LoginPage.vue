@@ -3,14 +3,14 @@
         <div class="row">
             <h1>Login form</h1>
             <form class="col s12" @submit.prevent="handleLogin">
-                <div v-if="errorMsg" class="card-panel">
-                    <span class="blue-text text-darken-2">{{errorMsg}}</span>
-                </div>
+                    <div v-if="errorMsg" class="card-panel">
+                        <span class="blue-text text-darken-2">{{errorMsg}}</span>
+                    </div>
                 <div class="row">
                     <div class="input-field">
                         <input v-model="userName" id="userName" type="text" class="validate" required>
                         <label for="userName">Username</label>
-                        <span class="helper-text" data-error="Username shouldn't be empty"></span>
+                                <span class="helper-text" data-error="Username shouldn't be empty"></span>
                     </div>
                 </div>
                 <div class="row">
@@ -41,11 +41,7 @@
 
         methods: {
               handleLogin() {
-                const loginInfo = {
-                    userName: this.userName,
-                    password: this.password
-                };
-                console.log(loginInfo);
+
                 AXIOS.post('/auth/login.do', {'userName' : this.userName, 'password' : this.password})
                     .then(response => {
                         console.log("response: " + response);
