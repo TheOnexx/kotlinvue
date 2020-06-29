@@ -1,27 +1,27 @@
 <template>
     <div class="container">
         <div class="row">
-            <form @submit="register" class="col s12">
+            <form @submit.prevent="register" class="col s12">
+                <div v-if="errorMsg" class="card-panel">
+                    <span class="blue-text text-darken-2">{{errorMsg}}</span>
+                </div>
                 <div class="row">
-                    <div v-if="errorMsg" class="card-panel">
-                        <span class="blue-text text-darken-2">{{errorMsg}}</span>
-                    </div>
                     <div class="input-field col s6">
-                        <input id="userName" type="text" class="validate" required>
-                        <label for="userName">First Name</label>
+                        <input v-model="userName" id="userName" type="text" class="validate" required>
+                        <label for="userName">Username</label>
                         <span class="helper-text" data-error="Username shouldn't be empty"></span>
                     </div>
                 </div>
                 <div class="row">
                     <div class="input-field col s12">
-                        <input id="password" type="password" class="validate" required>
+                        <input v-model="password" id="password" type="password" class="validate" required>
                         <label for="password">Password</label>
                         <span class="helper-text" data-error="Password shouldn't be empty"></span>
                     </div>
                 </div>
                 <div class="row">
                     <div class="input-field col s12">
-                        <input id="email" type="email" class="validate" required>
+                        <input v-model="email" id="email" type="email" class="validate" required>
                         <label for="email">Email</label>
                         <span class="helper-text" data-error="Email shouldn't be empty"></span>
                     </div>
@@ -49,11 +49,12 @@
 
         methods: {
             register() {
-                AXIOS.post('/auth/login.do', {userName: this.userName, password: this.password, email: this.email})
+                AXIOS.post('/auth/register.do', {userName: this.userName, password: this.password, email: this.email})
                     .then(response => {
                         console.log(response);
                         this.$router.push("/login")
                     }, error => {
+                        console.log("error response " + error.response.data.message);
                         this.showError(error.response.data.message)
                     })
                     .catch(

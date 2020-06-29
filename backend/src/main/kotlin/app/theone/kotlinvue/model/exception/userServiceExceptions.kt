@@ -3,6 +3,10 @@ package app.theone.kotlinvue.model.exception
 class UserAlreadyExistException(message: String) : RestApiException(message) {
 }
 
+class EmailAlreadyInUseException(message: String) : RestApiException(message) {
+}
+
+
 class RoleNotFoundException(message: String) : RestApiException(message) {
 
 }

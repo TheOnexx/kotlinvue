@@ -17,7 +17,7 @@ data class User (
         var password: String
 ) {
     @ManyToOne(cascade = [CascadeType.ALL])
-    @JoinColumn(name = "role")
+    @JoinColumn(name = "role_id")
     var role: Role? = null
         set(value) {
             field?.remove(this)

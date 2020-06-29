@@ -2,6 +2,7 @@ package app.theone.kotlinvue.model.service.impl
 
 import app.theone.kotlinvue.model.data.jpa.User
 import app.theone.kotlinvue.model.data.json.UserJson
+import app.theone.kotlinvue.model.exception.EmailAlreadyInUseException
 import app.theone.kotlinvue.model.exception.RoleNotFoundException
 import app.theone.kotlinvue.model.exception.UserAlreadyExistException
 import app.theone.kotlinvue.model.exception.UserNotFoundException
@@ -24,6 +25,12 @@ class UserServiceImpl(
 
         foundUser.ifPresent {
             throw UserAlreadyExistException("User with name [${it.name}] is already present")
+        }
+
+        val emailUser = userRepository.findUserByEmail(userJson.email!!)
+
+        emailUser.ifPresent {
+            throw EmailAlreadyInUseException("Email [${it.email}] is already used")
         }
 
         val role = roleRepository.findById(userJson.role!!)

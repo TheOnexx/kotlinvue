@@ -35,7 +35,7 @@ class AuthController(
                                 HttpStatus.CONFLICT,
                                 "User not found or password is incorrect",
                                 emptyList()
-                                ).asJsonString(),
+                                    ).asJsonString(),
                         HttpStatus.CONFLICT
                 )
             }
@@ -51,7 +51,7 @@ class AuthController(
             val newUserJson = ModelMapper().map(user, UserJson::class)
             return ResponseEntity.ok(newUserJson)
         } catch (e: Exception) {
-            throw RestApiException(e)
+            throw RestApiException(e.message!!, e)
         }
     }
 }
