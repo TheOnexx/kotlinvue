@@ -8,7 +8,7 @@
                     </div>
                 <div class="row">
                     <div class="input-field">
-                        <input v-model="userName" id="userName" type="text" class="validate" required>
+                        <input v-model="username" id="userName" type="text" class="validate" required>
                         <label for="userName">Username</label>
                                 <span class="helper-text" data-error="Username shouldn't be empty"></span>
                     </div>
@@ -34,7 +34,7 @@
         name: "LoginPage",
 
         data: () => ({
-            userName: '',
+            username: '',
             password: '',
             errorMsg: '',
         }),
@@ -42,9 +42,14 @@
         methods: {
               handleLogin() {
 
-                AXIOS.post('/auth/login.do', {'userName' : this.userName, 'password' : this.password})
+                AXIOS.post('/auth/login.do', {'username' : this.username, 'password' : this.password})
                     .then(response => {
                         console.log("response: " + response);
+                        this.$store.dispatch('login_action', {
+                            'username': this.username,
+                            'role': response.data.authority,
+                            'isLogin': 'true'
+                        });
                         this.$router.push("/categories")
                     }, error => {
                         this.showError(error.response.data.message)

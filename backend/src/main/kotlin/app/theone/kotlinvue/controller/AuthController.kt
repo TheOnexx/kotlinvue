@@ -9,18 +9,21 @@ import org.modelmapper.ModelMapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.authentication.AuthenticationManager
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.server.ResponseStatusException
-import java.lang.RuntimeException
 import javax.validation.Valid
 
 @RestController
 @RequestMapping("/auth")
 class AuthController(
-    @Autowired val userService: UserService
+    @Autowired val userService: UserService,
+    @Autowired val authenticationManager: AuthenticationManager
 ) {
 
     @PostMapping("login.do")
@@ -28,6 +31,9 @@ class AuthController(
         try {
             val isLogin = userService.login(userJson)
             return if(isLogin) {
+                val authentication = authenticationManager.authenticate(
+                        UsernamePasswordAuthenticationToken(userJson.username, userJson.password))
+                SecurityContextHolder.getContext().authentication = authentication
                 ResponseEntity.ok("Logged in")
             } else {
                 ResponseEntity(

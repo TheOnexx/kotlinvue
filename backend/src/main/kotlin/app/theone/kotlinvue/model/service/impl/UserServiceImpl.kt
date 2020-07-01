@@ -21,7 +21,7 @@ class UserServiceImpl(
 
     @Transactional
     override fun addUser(userJson: UserJson): User {
-        val foundUser = userRepository.findUserByName(userJson.userName!!)
+        val foundUser = userRepository.findUserByName(userJson.username!!)
 
         foundUser.ifPresent {
             throw UserAlreadyExistException("User with name [${it.name}] is already present")
@@ -33,15 +33,15 @@ class UserServiceImpl(
             throw EmailAlreadyInUseException("Email [${it.email}] is already used")
         }
 
-        val role = roleRepository.findById(userJson.role!!)
+        val role = roleRepository.findRoleIdByValue(userJson.role!!)
 
         role.orElseThrow {
-            throw RoleNotFoundException("There is no role with id [${userJson.role}]")
+            throw RoleNotFoundException("There is no role [${userJson.role}]")
         }
 
         val newUser = User(
                 0,
-                userJson.userName!!,
+                userJson.username!!,
                 userJson.email!!,
                 userJson.password!!
         )
@@ -54,18 +54,18 @@ class UserServiceImpl(
     @Transactional
     override fun register(userJson: UserJson): User {
         val defaultRole = roleRepository.defaultRole()
-        userJson.role = defaultRole.roleId
+        userJson.role = defaultRole.value
 
         return addUser(userJson)
     }
 
     override fun updateUser(userJson: UserJson): User {
-        val foundUser = findUserByName(userJson.userName!!)
+        val foundUser = findUserByName(userJson.username!!)
 
-        val role = roleRepository.findById(userJson.role!!)
+        val role = roleRepository.findRoleIdByValue(userJson.role!!)
 
         role.orElseThrow {
-            throw RoleNotFoundException("There is no role with id [${userJson.role}]")
+            throw RoleNotFoundException("There is no role [${userJson.role}]")
         }
 
         foundUser.update(userJson)
@@ -77,7 +77,7 @@ class UserServiceImpl(
 
     override fun login(userJson: UserJson) : Boolean {
 
-        val foundUser = userRepository.findUserByName(userJson.userName!!)
+        val foundUser = userRepository.findUserByName(userJson.username!!)
         if(!foundUser.isPresent) return false
         val user = foundUser.get()
         if(user.password == userJson.password) {
@@ -86,7 +86,7 @@ class UserServiceImpl(
         return false
     }
 
-    override fun findUserByName(userName: String): User = userRepository.findUserByName(userName).orElseThrow {
-        throw UserNotFoundException("There is no user [${userName}] in system")
+    override fun findUserByName(username: String): User = userRepository.findUserByName(username).orElseThrow {
+        throw UserNotFoundException("There is no user [${username}] in system")
     }
 }

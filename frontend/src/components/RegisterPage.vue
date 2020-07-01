@@ -7,7 +7,7 @@
                 </div>
                 <div class="row">
                     <div class="input-field col s6">
-                        <input v-model="userName" id="userName" type="text" class="validate" required>
+                        <input v-model="username" id="userName" type="text" class="validate" required>
                         <label for="userName">Username</label>
                         <span class="helper-text" data-error="Username shouldn't be empty"></span>
                     </div>
@@ -41,7 +41,7 @@
         name: "RegisterPage",
 
         data: () => ({
-            userName: '',
+            username: '',
             password: '',
             email: '',
             errorMsg: ''
@@ -49,7 +49,7 @@
 
         methods: {
             register() {
-                AXIOS.post('/auth/register.do', {userName: this.userName, password: this.password, email: this.email})
+                AXIOS.post('/auth/register.do', {username: this.username, password: this.password, email: this.email})
                     .then(response => {
                         console.log(response);
                         this.$router.push("/login")

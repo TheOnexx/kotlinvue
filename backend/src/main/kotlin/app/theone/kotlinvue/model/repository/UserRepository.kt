@@ -11,8 +11,8 @@ import java.util.*
 interface UserRepository : CrudRepository<User, Int> {
 
     @Query("select user from users user where name = :name")
-    fun findUserByName(@Param("name") name: String) : Optional<User>
+    fun findUserByName(@Param("name") name: String): Optional<User>
 
     @Query("select user from users user where email = :email")
-    fun findUserByEmail(@Param("email") email: String) : Optional<User>
+    fun findUserByEmail(@Param("email") email: String): Optional<User>
 }

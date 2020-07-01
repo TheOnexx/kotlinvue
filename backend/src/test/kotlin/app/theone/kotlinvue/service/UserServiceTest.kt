@@ -6,7 +6,6 @@ import app.theone.kotlinvue.model.data.json.UserJson
 import app.theone.kotlinvue.model.repository.RoleRepository
 import app.theone.kotlinvue.model.repository.UserRepository
 import app.theone.kotlinvue.model.service.UserService
-import app.theone.kotlinvue.model.service.impl.UserServiceImpl
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -53,9 +52,9 @@ class UserServiceTest : AbstractTransactionalJUnit4SpringContextTests(){
 
         val addUser = userService.addUser(buildUser)
 
-        val findUserByName = userService.findUserByName(buildUser.userName!!)
+        val findUserByName = userService.findUserByName(buildUser.username!!)
 
-        Assert.assertEquals(findUserByName.name, buildUser.userName)
+        Assert.assertEquals(findUserByName.name, buildUser.username)
         Assert.assertEquals(findUserByName.userId, addUser.userId)
 
     }
@@ -74,7 +73,7 @@ class UserServiceTest : AbstractTransactionalJUnit4SpringContextTests(){
     fun givenNewUserInfo_whenUpdate_thenUserInfoUpdated() {
         val buildUser = buildUser()
         userService.addUser(buildUser)
-        val test = userService.findUserByName(buildUser.userName!!)
+        val test = userService.findUserByName(buildUser.username!!)
         println("TEST $test")
 
         val newEmail = "updatedEmail"
@@ -82,13 +81,13 @@ class UserServiceTest : AbstractTransactionalJUnit4SpringContextTests(){
         buildUser.email = newEmail
         buildUser.password = newPassword
         val role2Id = roleRepository.findAll().last().roleId
-        buildUser.role = role2Id
+        buildUser.role = role2Id.toString()
 
         userService.updateUser(buildUser)
 
         println("TEST 2 $test" )
 
-        val foundUpdatedUser = userService.findUserByName(buildUser.userName!!)
+        val foundUpdatedUser = userService.findUserByName(buildUser.username!!)
 
         Assert.assertEquals(newEmail, foundUpdatedUser.email)
         Assert.assertEquals(newPassword, foundUpdatedUser.password)
@@ -102,6 +101,6 @@ class UserServiceTest : AbstractTransactionalJUnit4SpringContextTests(){
                 "testUser",
                 "testEmail",
                 "testPassword",
-                roleRepository.findAll().iterator().next().roleId
+                roleRepository.findAll().iterator().next().roleId.toString()
         )
 }

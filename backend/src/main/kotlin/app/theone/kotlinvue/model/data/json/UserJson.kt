@@ -1,6 +1,5 @@
 package app.theone.kotlinvue.model.data.json
 
-import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.io.Serializable
 
@@ -9,8 +8,8 @@ class UserJson : Serializable {
     @JsonProperty("userId")
     var userId: Int? = null
 
-    @JsonProperty("userName")
-    var userName: String? = null
+    @JsonProperty("username")
+    var username: String? = null
 
     @JsonProperty("email")
     var email: String? = null
@@ -19,12 +18,12 @@ class UserJson : Serializable {
     var password: String? = null
 
     @JsonProperty("roleId")
-    var role: Int? = null
+    var role: String? = null
 
 
-    constructor(userId: Int?, userName: String?, email: String?, password: String?, role: Int?)  {
+    constructor(userId: Int?, userName: String?, email: String?, password: String?, role: String?)  {
         this.userId = userId
-        this.userName = userName
+        this.username = userName
         this.email = email
         this.password = password
         this.role = role
