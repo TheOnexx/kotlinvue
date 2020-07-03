@@ -47,10 +47,12 @@
                         console.log("response: " + response);
                         this.$store.dispatch('login_action', {
                             'username': this.username,
-                            'role': response.data.authority,
+                            'role': response.data.role,
                             'isLogin': 'true'
                         });
-                        this.$router.push("/categories")
+                        console.log("username: " + this.username);
+                        console.log("role: " + response.data.role);
+                        this.$router.push("/")
                     }, error => {
                         this.showError(error.response.data.message)
                     })

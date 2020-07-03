@@ -34,7 +34,7 @@ class AuthController(
                 val authentication = authenticationManager.authenticate(
                         UsernamePasswordAuthenticationToken(userJson.username, userJson.password))
                 SecurityContextHolder.getContext().authentication = authentication
-                ResponseEntity.ok("Logged in")
+                ResponseEntity.ok(UserJson(userJson.username, authentication.authorities.first().toString()))
             } else {
                 ResponseEntity(
                         ApiError(

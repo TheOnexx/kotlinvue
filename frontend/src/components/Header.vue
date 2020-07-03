@@ -12,6 +12,7 @@
                         <a href="#">Categories</a>
                     </router-link>
                     <router-link
+                            v-if="!this.isLogin"
                             tag="li"
                             to="/login"
                             active-class="active"
@@ -19,12 +20,23 @@
                         <a href="#">Sign in</a>
                     </router-link>
                     <router-link
+                            v-else
+                            tag="li"
+                            to="/categories"
+                            active-class="active"
+                    >
+                        <a href="#">Personal Page</a>
+                    </router-link>
+                    <router-link
+                            v-if="!this.isLogin"
                             tag="li"
                             to="/register"
                             active-class="active"
                     >
                         <a href="#">Sign up</a>
                     </router-link>
+                    <li v-if="this.isLogin" v-on:click="logout" class="active">Logout!</li>
+
                 </ul>
             </div>
         </nav>
@@ -32,8 +44,24 @@
 </template>
 
 <script>
+    import {mapState} from 'vuex'
     export default {
-        name: "Header"
+        name: "Header",
+
+        computed: {
+            ...mapState({
+                isLogin: 'isLogin'
+            })
+        },
+
+        methods: {
+            logout() {
+                console.log("logout start");
+                this.$store.dispatch('logout_action');
+                this.$router.push("/")
+            }
+        }
+
     }
 </script>
 

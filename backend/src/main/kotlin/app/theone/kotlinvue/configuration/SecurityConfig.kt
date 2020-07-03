@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.core.userdetails.UserDetailsService
+import org.springframework.security.crypto.password.NoOpPasswordEncoder
 
 @Configuration
 @EnableWebSecurity
@@ -20,7 +21,7 @@ class SecurityConfig : WebSecurityConfigurerAdapter() {
     lateinit var userDetailService: UserDetailsService
 
     override fun configure(auth: AuthenticationManagerBuilder) {
-        auth.userDetailsService(userDetailService)
+        auth.userDetailsService(userDetailService).passwordEncoder(NoOpPasswordEncoder.getInstance())
     }
 
     @Bean

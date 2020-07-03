@@ -31,12 +31,24 @@ const mutations = {
         state.username = user.username;
         state.role = user.role;
         state.isLogin = user.isLogin
+    },
+    logout: (state) => {
+        localStorage.setItem('username', '');
+        localStorage.setItem('role', '');
+        localStorage.setItem('isLogin', '');
+
+        state.username = '';
+        state.role = '';
+        state.isLogin = '';
     }
 };
 
 const actions = {
-    action_login: (context, user) => {
+    login_action: (context, user) => {
         context.commit('login', user)
+    },
+    logout_action: (context) => {
+        context.commit('logout')
     }
 };
 

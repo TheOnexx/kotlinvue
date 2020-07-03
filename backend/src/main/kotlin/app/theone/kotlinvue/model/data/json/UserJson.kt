@@ -17,7 +17,7 @@ class UserJson : Serializable {
     @JsonProperty("password")
     var password: String? = null
 
-    @JsonProperty("roleId")
+    @JsonProperty("role")
     var role: String? = null
 
 
@@ -29,7 +29,12 @@ class UserJson : Serializable {
         this.role = role
     }
 
+
     constructor(){}
+    constructor(username: String?, role: String?) {
+        this.username = username
+        this.role = role
+    }
 
     companion object {
 
