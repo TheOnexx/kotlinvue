@@ -5,6 +5,14 @@
                 <router-link to="/" class="brand-logo">Dev Shop</router-link>
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
                     <router-link
+                            v-if="this.isAdmin"
+                            tag="li"
+                            to="/admin"
+                            active-class="active"
+                    >
+                        <a href="#">Admin panel</a>
+                    </router-link>
+                    <router-link
                             tag="li"
                             to="/categories"
                             active-class="active"
@@ -22,7 +30,7 @@
                     <router-link
                             v-else
                             tag="li"
-                            to="/categories"
+                            to="/user"
                             active-class="active"
                     >
                         <a href="#">Personal Page</a>
@@ -35,7 +43,7 @@
                     >
                         <a href="#">Sign up</a>
                     </router-link>
-                    <li v-if="this.isLogin" v-on:click="logout" class="active">Logout!</li>
+                    <li v-if="this.isLogin" v-on:click="logout" class="active"><a href="#">Logout!</a></li>
 
                 </ul>
             </div>
@@ -45,15 +53,14 @@
 
 <script>
     import {mapState} from 'vuex'
+    import {mapGetters} from 'vuex'
     export default {
         name: "Header",
 
         computed: {
-            ...mapState({
-                isLogin: 'isLogin'
-            })
+            ...mapState(['isLogin']),
+            ...mapGetters(['isAdmin'])
         },
-
         methods: {
             logout() {
                 console.log("logout start");

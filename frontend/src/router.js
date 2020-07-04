@@ -5,6 +5,7 @@ import UserPage from "./components/UserPage.vue"
 import CategoriesPage from "./components/CategoriesPage.vue"
 import LoginPage from "./components/LoginPage.vue"
 import RegisterPage from "./components/RegisterPage.vue"
+import AdminPage from "./components/AdminPage.vue"
 
 Vue.use(Router);
 
@@ -35,6 +36,11 @@ export default new Router({
             path: '/register',
             name: 'RegisterPage',
             component: RegisterPage
+        },
+        {
+            path: '/admin',
+            name: 'AdminPage',
+            component: AdminPage
         }
     ]
 })
