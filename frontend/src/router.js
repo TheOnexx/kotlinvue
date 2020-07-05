@@ -6,6 +6,8 @@ import CategoriesPage from "./components/CategoriesPage.vue"
 import LoginPage from "./components/LoginPage.vue"
 import RegisterPage from "./components/RegisterPage.vue"
 import AdminPage from "./components/AdminPage.vue"
+import AdminProducts from "./components/admin/AdminProducts.vue"
+import AdminUsers from "./components/admin/AdminUsers.vue"
 
 Vue.use(Router);
 
@@ -40,7 +42,16 @@ export default new Router({
         {
             path: '/admin',
             name: 'AdminPage',
-            component: AdminPage
+            component: AdminPage,
+            children: [
+                {
+                    path: 'products',
+                    component: AdminProducts
+                },
+                {
+                    path: 'users',
+                    component: AdminUsers
+                }]
         }
     ]
 })
