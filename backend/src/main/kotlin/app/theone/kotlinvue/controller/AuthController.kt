@@ -41,7 +41,7 @@ class AuthController(
                                 HttpStatus.CONFLICT,
                                 "User not found or password is incorrect",
                                 emptyList()
-                                    ).asJsonString(),
+                        ).asJsonString(),
                         HttpStatus.CONFLICT
                 )
             }

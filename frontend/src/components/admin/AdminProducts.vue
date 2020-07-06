@@ -5,8 +5,18 @@
 </template>
 
 <script>
+    import {AXIOS} from "../../http-common";
+
     export default {
-        name: "AdminProducts"
+        name: "AdminProducts",
+
+        data: () => ({
+            products: []
+        }),
+
+        created() {
+            AXIOS.get('/')
+        }
     }
 </script>
 
