@@ -17,7 +17,7 @@
                     {{product.description}}
                 </td>
                 <td>
-                    {{product.category}}
+                    {{product.categoryName}}
                 </td>
                 <td>
                     {{product.price}}

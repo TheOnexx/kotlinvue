@@ -5,6 +5,7 @@ class ProductJson {
     var name: String? = null
     var description: String? = null
     var category: Int? = null
+    var categoryName: String? = null
     var price: Int? = null
 
 }
