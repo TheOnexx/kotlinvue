@@ -2,40 +2,46 @@
     <div>
         Products!
 
-        <table class="centered">
-            <tr>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Category</th>
-                <th>Price</th>
-            </tr>
-            <tr v-for="product in products" v-bind:key="product.id">
-                <td>
-                    {{product.name}}
-                </td>
-                <td>
-                    {{product.description}}
-                </td>
-                <td>
-                    {{product.categoryName}}
-                </td>
-                <td>
-                    {{product.price}}
-                </td>
-            </tr>
-        </table>
+        <AdminTable
+            :headers="headers"
+            :tableData="productsData"/>
     </div>
 </template>
 
 <script>
     import {AXIOS} from "../../http-common";
+    import AdminTable from './table/AdminTable'
 
     export default {
         name: "AdminProducts",
 
+        components: {
+            AdminTable
+        },
+
+        computed: {
+            productsData: function () {
+                return this.products.map(p => {
+                    return {
+                        objectId: p.id,
+                        name: p.name,
+                        description: p.description,
+                        category: p.categoryName,
+                        price: p.price
+                    }
+                })
+            }
+        },
+
         data: () => ({
             products: [],
-            errorMsg: ''
+            errorMsg: '',
+            headers: [
+                'Name',
+                'Description',
+                'Category',
+                'Price!'
+            ]
         }),
 
         created() {

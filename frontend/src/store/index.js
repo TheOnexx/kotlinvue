@@ -2,6 +2,8 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 
 Vue.use(Vuex);
+Vue.config.devtools = true;
+
 
 const state = {
     username: localStorage.getItem('username') || '',
